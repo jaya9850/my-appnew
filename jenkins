@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone') {
+            steps {
+                git url: 'https://github.com/<your-username>/simple-node-docker-app.git', branch: 'main'
+            }
+        }
+        stage('Install') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t simple-node-docker-app .'
+            }
+        }
+        stage('Trigger GitHub Actions') {
+            steps {
+                sh '''
+                curl -X POST \
+                -H "Authorization: token ${GITHUB_TOKEN}" \
+                https://api.github.com/repos/<your-username>/simple-node-docker-app/actions/workflows/docker-build.yml/dispatches \
+                -d '{"ref":"main"}'
+                '''
+            }
+        }
+    }
+}
