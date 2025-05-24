@@ -8,5 +8,5 @@ Dockerfile to containerize the app
 
 GitHub Actions for CI/CD automation
 
-Jenkins pipeline to build, test, and trigger GitHub Actions
+Jenkins pipeline to build, test, and trigger GitHub Action
 
